@@ -23,7 +23,7 @@ chrome.runtime.onMessage.addListener(function(request, sender){
 function sendProducts(products){
   console.log('sendProducts')
   $.ajax({
-    url: "http://localhost:3000/products/report",
+    url: "http://honorbear.ynilu.com/products/report",
     method: "POST",
     contentType: "application/json",
     data: JSON.stringify({ products: products }),

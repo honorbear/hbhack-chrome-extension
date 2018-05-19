@@ -1,5 +1,5 @@
 // Settings
-var beeImage = "http://localhost:3000/bee.png"
+var beeImage = "http://honorbear.ynilu.com/bee.png"
 
 console.log('load contents');
 
