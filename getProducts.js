@@ -76,27 +76,41 @@ function parseCarrefourProducts(document) {
 
 function updateCarrefourProductsInfo(products) {
   products.forEach(product => {
-    let popup = carrefourPopup(product.link)
-    $(`.item-product [data-productid=${product.id}]`).after($(popup))
+    if(product.proposed_products.length > 0){
+      let popup = carrefourPopup(product.proposed_products)
+      $(`.item-product [data-productid=${product.id}]`).after($(popup))
+    }
   })
 }
 
 /**
  * Popup showed in carrefour
+ * @proposed_products proposed products from server
+ * format:
+ *  [{
+ *    link: link to product,
+ *    info: product info
+ *  },...]
  */
-function carrefourPopup(link){
+function carrefourPopup(proposed_products){
   return `
     <ul class="dropdown-style-wrap item-cart inline-block clearfix">
       <li>
         <img src=${beeImage} height="22" width="26"></img>
         <ul class="dropdown-list mobile-style-2 dropdown-style-1 dropdown-up">
-          <li>
-            <a href=${link} style="text-decoration: underline; color: blue;">
-              在 Honestbee 以更便宜的價格購買
-            </a>
-          </li>
+          ${proposed_products.map(product => proposed_product(product)).join()}
         </ul>
       </li>
     </ul>
   `
+}
+
+function proposed_product(product){
+  return(`
+    <li>
+      <a href=${product.link} style="text-decoration: underline; color: blue;">
+        在 Honestbee 以更便宜的價格購買, ${product.info}
+      </a>
+    </li>
+  `)
 }

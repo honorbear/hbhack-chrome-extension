@@ -29,7 +29,7 @@ function injectScript() {
 
 function sendProducts(products){
   $.ajax({
-    url: "http://localhost:3000",
+    url: "http://localhost:3000/products/report",
     method: "POST",
     contentType: "application/json",
     data: JSON.stringify({ products: products }),
