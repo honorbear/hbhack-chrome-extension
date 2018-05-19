@@ -29,13 +29,13 @@ if(location.href.match(/carrefour/)){
 }
 
 chrome.runtime.sendMessage({
-  action: "getProducts",
+  action: ACTION_GET_PRODUCTS,
   products: parseProducts(document),
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   console.log(request)
-  if(request.action == "serverResponse"){
+  if(request.action == ACTION_SERVER_RESPONSE){
     updateProductsInfo(request.products)
   }
 })
@@ -51,23 +51,27 @@ function parseCarrefourProducts(document) {
   var $productIds = $('.item-product .item-love')
   var products = [];
 
-  for(var i = 0; i < $names.length; i++){
+  var diff = $names.length - $productIds.length
+  for(var i = 0; i < $productIds.length; i++){
     // skip if data is unexpected format
+    var currentName = $names[i + diff]
+    var currentPrice = $prices[i + diff]
+    var currentImage = $imgs[i + diff]
     if(
       !$productIds[i] || !$productIds[i].dataset || !$productIds[i].dataset.productid ||
-      !$names[i] || !$names[i].textContent || $names[i].textContent.split('\n').length != 3 ||
-      !$prices[i] || !$prices[i].textContent
+      !currentName || !currentName.textContent || currentName.textContent.split('\n').length != 3 ||
+      !currentPrice || !currentPrice.textContent
     ) {
       continue
     }
-    var nameParts = $names[i].textContent.split('\n')
+    var nameParts = currentName.textContent.split('\n')
     var product = {
       vendor: 'carrefour',
       id: $productIds[i].dataset.productid,
       name: nameParts[1].trim(),
       quantity: nameParts[2].match(/\d+/g)[0] || 1,
-      price: $prices[i].textContent.match(/\d+/g)[0] || 0,
-      img: $imgs[0].src
+      price: currentPrice.textContent.match(/\d+/g)[0] || 0,
+      img: currentImage.src
     }
     products.push(product);
   }
@@ -75,7 +79,6 @@ function parseCarrefourProducts(document) {
 }
 
 function updateCarrefourProductsInfo(products) {
-  window.products = products
   products.forEach(product => {
     if(product.proposed_products.length > 0){
       console.log(`product ${product.name} has proposed products`)

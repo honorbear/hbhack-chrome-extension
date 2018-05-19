@@ -30,9 +30,11 @@ function sendProducts(products){
   }).done(function(res){
     console.log('response:', res)
 
-    chrome.runtime.sendMessage({
-      action: ACTION_SERVER_RESPONSE,
-      products: res.products
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+      chrome.tabs.sendMessage(tabs[0].id, {
+        action: ACTION_SERVER_RESPONSE,
+        products: res.products
+      }, function(response) {});
     });
   })
 }
