@@ -10,7 +10,11 @@
     "http://localhost:3000/"
   ],
   "background": {
-    "scripts": ["background.js"],
+    "scripts": [
+      "jquery-3.3.1.min.js",
+      "constant.js",
+      "background.js"
+    ],
     "persistent": false
   },
   "page_action": {
@@ -22,6 +26,19 @@
       "128": "images/bee128.png"
     }
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://online.carrefour.com.tw/*"
+      ],
+      "js": [
+        "jquery-3.3.1.min.js",
+        "constant.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
   "icons": {
     "16": "images/bee16.png",
     "32": "images/bee32.png",

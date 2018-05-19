@@ -1,7 +1,7 @@
 // Settings
 var beeImage = "http://localhost:3000/bee.png"
 
-console.log('get products');
+console.log('load contents');
 
 /**
  * Abstract method need to implement and added to below
@@ -29,13 +29,13 @@ if(location.href.match(/carrefour/)){
 }
 
 chrome.runtime.sendMessage({
-  action: ACTION_GET_PRODUCTS,
+  action: "getProducts",
   products: parseProducts(document),
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   console.log(request)
-  if(request.action == ACTION_SERVER_RESPONSE){
+  if(request.action == "serverResponse"){
     updateProductsInfo(request.products)
   }
 })
@@ -75,8 +75,10 @@ function parseCarrefourProducts(document) {
 }
 
 function updateCarrefourProductsInfo(products) {
+  window.products = products
   products.forEach(product => {
     if(product.proposed_products.length > 0){
+      console.log(`product ${product.name} has proposed products`)
       let popup = carrefourPopup(product.proposed_products)
       $(`.item-product [data-productid=${product.id}]`).after($(popup))
     }

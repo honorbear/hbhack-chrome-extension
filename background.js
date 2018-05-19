@@ -12,3 +12,27 @@ chrome.runtime.onInstalled.addListener(function() {
     }]);
   });
 });
+
+chrome.runtime.onMessage.addListener(function(request, sender){
+  console.log('receive event')
+  if(request.action == ACTION_GET_PRODUCTS){
+    sendProducts(request.products)
+  }
+});
+
+function sendProducts(products){
+  console.log('sendProducts')
+  $.ajax({
+    url: "http://localhost:3000/products/report",
+    method: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({ products: products }),
+  }).done(function(res){
+    console.log('response:', res)
+
+    chrome.runtime.sendMessage({
+      action: ACTION_SERVER_RESPONSE,
+      products: res.products
+    });
+  })
+}
