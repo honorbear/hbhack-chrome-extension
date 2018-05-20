@@ -113,7 +113,7 @@ function carrefourPopup(proposed_products){
 function proposed_product(product){
   return(`
     <li>
-      <a href=${product.link} style="text-decoration: underline; color: blue;">
+      <a href=${product.link} target="_blank" style="text-decoration: underline; color: blue;">
         在 Honestbee 以更便宜的價格購買, ${product.info}
       </a>
     </li>
