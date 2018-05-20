@@ -114,7 +114,7 @@ function proposed_product(product){
   return(`
     <li>
       <a href=${product.link} target="_blank" style="text-decoration: underline; color: blue;">
-        在 Honestbee 以更便宜的價格購買, ${product.info}
+        Honestbee 上價格近似的商品, ${product.info}
       </a>
     </li>
   `)
